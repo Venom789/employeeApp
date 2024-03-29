@@ -1,0 +1,122 @@
+<div class="container">
+    <h2 class="text-center mb-5 mt-3">Employee Dashboard</h2>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add Employee
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ employee ? 'Edit' : 'Add New' }} Employee
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="employeeForm" (ngSubmit)="onSave()">
+                        <div class="form-group" *ngIf="employee">
+                            <label for="employeeCode">Employee Code</label>
+                            <input type="text" class="form-control" id="employeeCode" formControlName="employeeCode" [readonly]="true">
+                        </div>                        
+                        <div class="form-group">
+                            <label for="employeeName">Employee Name</label>
+                            <input type="text" class="form-control" id="employeeName" formControlName="employeeName" required>
+                            <div *ngIf="employeeForm.get('employeeName')?.invalid && (employeeForm.get('employeeName')?.dirty || employeeForm.get('employeeName')?.touched)" class="text-danger">
+                                Employee Name is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" class="form-control" id="dateOfBirth" formControlName="dateOfBirth" required>
+                            <div *ngIf="employeeForm.get('dateOfBirth')?.invalid && (employeeForm.get('dateOfBirth')?.dirty || employeeForm.get('dateOfBirth')?.touched)" class="text-danger">
+                                Date of Birth is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" formControlName="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                            <div *ngIf="employeeForm.get('gender')?.invalid && (employeeForm.get('gender')?.dirty || employeeForm.get('gender')?.touched)" class="text-danger">
+                                Gender is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" class="form-control" id="department" formControlName="department" required>
+                            <div *ngIf="employeeForm.get('department')?.invalid && (employeeForm.get('department')?.dirty || employeeForm.get('department')?.touched)" class="text-danger">
+                                Department is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="designation">Designation</label>
+                            <input type="text" class="form-control" id="designation" formControlName="designation" required>
+                            <div *ngIf="employeeForm.get('designation')?.invalid && (employeeForm.get('designation')?.dirty || employeeForm.get('designation')?.touched)" class="text-danger">
+                                Designation is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="basicSalary">Basic Salary</label>
+                            <input type="number" class="form-control" id="basicSalary" formControlName="basicSalary" required>
+                            <div *ngIf="employeeForm.get('basicSalary')?.invalid && (employeeForm.get('basicSalary')?.dirty || employeeForm.get('basicSalary')?.touched)" class="text-danger">
+                                Basic Salary is required.
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Employee Grid -->
+    <div class="mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Employee Code</th>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Basic Salary</th>
+                    <th>Dearness</th>
+                    <th>Conveyance</th>
+                    <th>HRA</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let employee of employees">
+                    <td>{{ employee.employeeCode }}</td>
+                    <td>{{ employee.employeeName }}</td>
+                    <td>{{ employee.dateOfBirth | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ employee.gender ? 'Male' : 'Female' }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td>{{ employee.designation }}</td>
+                    <td>{{ employee.basicSalary }}</td>
+                    <td>{{ employee.dearnessAllowance }}</td>
+                    <td>{{ employee.conveyanceAllowance }}</td>
+                    <td>{{ employee.houseRentAllowance }}</td>
+                    <td>
+                        <button class="btn btn-primary me-1" (click)="editEmployee(employee)" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Edit
+                        </button>
+                        <button class="btn btn-danger" (click)="deleteEmployee(employee)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
